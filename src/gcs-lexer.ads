@@ -112,8 +112,20 @@ package GCS.Lexer is
    package Set_Of_Tokens is new WL.Sets.Bounded (Token);
 
    procedure Expect (T          : Token;
-                     Skip_Up_To : Set_Of_Tokens.Set);
-   procedure Skip_To (Skip_Up_To : Set_Of_Tokens.Set);
+                     Skip_Up_To : Token);
+
+   procedure Expect (T          : Token;
+                     Skip_Up_To : Set_Of_Tokens.Element_List);
+
+   procedure Skip_To (Skip_Up_To : Token);
+   procedure Skip_To (Tok_1, Tok_2 : Token);
+   procedure Skip_To (Tok_1, Tok_2, Tok_3 : Token);
+   procedure Skip_To (Tok_1, Tok_2, Tok_3, Tok_4 : Token);
+
+   procedure Skip_To (Skip_Up_To : Set_Of_Tokens.Element_List);
+
+   procedure Skip_To (Skip_To_And_Parse : Set_Of_Tokens.Element_List;
+                      Skip_To_And_Stop  : Set_Of_Tokens.Element_List);
 
    type Trap_Handler is access procedure (Line_No   : Positive;
                                           Line_Text : String);
