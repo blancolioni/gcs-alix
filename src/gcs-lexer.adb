@@ -85,6 +85,14 @@ package body GCS.Lexer is
                           Location : in File_Position;
                           Message  : in String);
 
+   procedure Expect (T          : Token;
+                     Skip_Up_To : Set_Of_Tokens.Set);
+   procedure Skip_To (Skip_Up_To : Set_Of_Tokens.Set);
+
+   ------------------------------
+   -- Initialise_Character_Set --
+   ------------------------------
+
    procedure Initialise_Character_Set (Set    : in out Character_Set;
                                        Chars  : in     String)
    is
@@ -415,11 +423,18 @@ package body GCS.Lexer is
    -----------------
 
    function Get_Keyword (Text : String) return Token is
-      Key : constant Keyword_Strings.Bounded_String :=
-              Keyword_Strings.To_Bounded_String (Text);
    begin
-      if Keyword_List.Contains (Key) then
-         return Keyword_List.Element (Key);
+      if Text'Length < Keyword_Strings.Max_Length then
+         declare
+            Key : constant Keyword_Strings.Bounded_String :=
+                    Keyword_Strings.To_Bounded_String (Text);
+         begin
+            if Keyword_List.Contains (Key) then
+               return Keyword_List.Element (Key);
+            else
+               return Tok_Identifier;
+            end if;
+         end;
       else
          return Tok_Identifier;
       end if;
@@ -921,6 +936,10 @@ package body GCS.Lexer is
 
    end Initialise_Symbol_List;
 
+   ------------
+   -- Expect --
+   ------------
+
    procedure Expect (T          : Token;
                      Skip_Up_To : Set_Of_Tokens.Set) is
       use Set_Of_Tokens;
@@ -936,12 +955,80 @@ package body GCS.Lexer is
       end if;
    end Expect;
 
+   ------------
+   -- Expect --
+   ------------
+
+   procedure Expect (T          : Token;
+                     Skip_Up_To : Token)
+   is
+      use Set_Of_Tokens;
+   begin
+      Expect (T, +Skip_Up_To);
+   end Expect;
+
+   ------------
+   -- Expect --
+   ------------
+
+   procedure Expect (T          : Token;
+                     Skip_Up_To : Set_Of_Tokens.Element_List)
+   is
+      use Set_Of_Tokens;
+   begin
+      Expect (T, +Skip_Up_To);
+   end Expect;
+
    procedure Skip_To (Skip_Up_To : Set_Of_Tokens.Set) is
       use Set_Of_Tokens;
    begin
       while Tok /= Tok_End_Of_File and then not (Tok <= Skip_Up_To) loop
          Scan;
       end loop;
+   end Skip_To;
+
+   -------------
+   -- Skip_To --
+   -------------
+
+   procedure Skip_To (Skip_Up_To : Token) is
+      use Set_Of_Tokens;
+   begin
+      Skip_To (+Skip_Up_To);
+   end Skip_To;
+
+   procedure Skip_To (Tok_1, Tok_2 : Token) is
+   begin
+      Skip_To ((Tok_1, Tok_2));
+   end Skip_To;
+
+   procedure Skip_To (Tok_1, Tok_2, Tok_3 : Token) is
+   begin
+      Skip_To ((Tok_1, Tok_2, Tok_3));
+   end Skip_To;
+
+   procedure Skip_To (Tok_1, Tok_2, Tok_3, Tok_4 : Token) is
+   begin
+      Skip_To ((Tok_1, Tok_2, Tok_3, Tok_4));
+   end Skip_To;
+
+   procedure Skip_To (Skip_Up_To : Set_Of_Tokens.Element_List) is
+      use Set_Of_Tokens;
+   begin
+      Skip_To (+Skip_Up_To);
+   end Skip_To;
+
+   procedure Skip_To (Skip_To_And_Parse : Set_Of_Tokens.Element_List;
+                      Skip_To_And_Stop  : Set_Of_Tokens.Element_List) is
+      use Set_Of_Tokens;
+      Parse : constant Set := +Skip_To_And_Parse;
+      Stop  : constant Set := +Skip_To_And_Stop;
+      Skip  : constant Set := Parse + Stop;
+   begin
+      Skip_To (Skip);
+      if Tok <= Skip then
+         Scan;
+      end if;
    end Skip_To;
 
    function Get_Current_Position return GCS.Positions.File_Position is
