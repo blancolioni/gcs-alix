@@ -517,6 +517,13 @@ package body GCS.File_Manager is
          Ada.Text_IO.Get_Line (Info.Curr_Line, Info.Line_Length);
       end if;
 
+      --  ignore DOS line terminators, if present
+      if Info.Line_Length > 0
+        and then Info.Curr_Line (Info.Line_Length) = Character'Val (13)
+      then
+         Info.Line_Length := Info.Line_Length - 1;
+      end if;
+
       WL.Trace.Put_Line (Level    => 4,
                          Message  => Current_File_Name & ':' &
                          Line_Number'Image (Info.Line_No) & ':' &
