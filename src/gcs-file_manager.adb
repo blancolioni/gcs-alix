@@ -317,7 +317,7 @@ package body GCS.File_Manager is
          First_File  := True;
          File_Prefix := null;
          for I in reverse Name'Range loop
-            if Name (I) = GNAT.OS_Lib.Directory_Separator then
+            if Name (I) = '/' or else Name (I) = '\' then
                File_Prefix := new String'(Name (Name'First .. I));
                exit;
             end if;
@@ -349,7 +349,7 @@ package body GCS.File_Manager is
          --  concept of a file prefix even belongs here, but hey.
          if (not Stdin and not From_String) and then
            (First_File or else
-            Name (Name'First) = GNAT.OS_Lib.Directory_Separator or else
+            Name (Name'First) = '/' or else
             (GNAT.OS_Lib.Directory_Separator = '\' and then
              Name (Name'First + 1) = ':'))
          then
