@@ -531,7 +531,8 @@ package body GCS.Lexer is
            end loop;
 
            while not GCS.File_Manager.End_Of_File and then
-             not GCS.File_Manager.Match (Block_Comment_End)
+              not GCS.File_Manager.Match (Block_Comment_End,
+                                          Skip_Match => True)
            loop
               GCS.File_Manager.Skip;
               GCS.File_Manager.Skip_Spaces;
