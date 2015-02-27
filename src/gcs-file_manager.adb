@@ -342,6 +342,8 @@ package body GCS.File_Manager is
          Source_Files_Open := Source_Files_Open + 1;
       end if;
 
+      Source_File_Stack (Source_Files_Open).Stdin := False;
+      Source_File_Stack (Source_Files_Open).From_String := False;
 
       begin
          --  2000-12-14:fraser: don't use file prefix if we have a
@@ -370,6 +372,8 @@ package body GCS.File_Manager is
          elsif From_String then
             Source_File_Stack (Source_Files_Open).From_String := True;
          end if;
+
+         Source_File_Stack (Source_Files_Open).End_Of_File := False;
 
       exception
          when others =>
