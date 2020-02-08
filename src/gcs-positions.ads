@@ -15,6 +15,8 @@ package GCS.Positions is
 
    function Image (Item : File_Position) return String;
 
+   function "<" (Left, Right : File_Position) return Boolean;
+
 private
 
    type File_Position is
