@@ -28,4 +28,3 @@ private
       end record;
 
 end GCS.Positions;
-

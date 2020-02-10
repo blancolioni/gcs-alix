@@ -1,3 +1,5 @@
+with Ada.Directories;
+
 with GCS.File_Manager;
 
 package body GCS.Positions is
@@ -7,7 +9,6 @@ package body GCS.Positions is
    ---------
 
    function "<" (Left, Right : File_Position) return Boolean is
-      use GCS.Constraints;
    begin
       if Left.File = Right.File then
          if Left.Line = Right.Line then
@@ -81,8 +82,9 @@ package body GCS.Positions is
       Col_Image  : constant String :=
         Column_Number'Image (Get_Column (Item));
    begin
-      return File_Manager.Get_File_Name (Get_File (Item)) &
-        ':' & Line_Image (Line_Image'First + 1 .. Line_Image'Last) &
+      return Ada.Directories.Simple_Name
+        (File_Manager.Get_File_Name (Get_File (Item)))
+        & ':' & Line_Image (Line_Image'First + 1 .. Line_Image'Last) &
         ':' & Col_Image (Col_Image'First + 1 .. Col_Image'Last);
    end Image;
 

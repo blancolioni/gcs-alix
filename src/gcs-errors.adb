@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Text_IO;
 
 with WL.Strings;                     use WL.Strings;
@@ -74,7 +75,7 @@ package body GCS.Errors is
    begin
       Got_Error (Error) := True;
 
-      Put_Error (File_Name & ':' &
+      Put_Error (Ada.Directories.Simple_Name (File_Name) & ':' &
                  Line_Img (2 .. Line_Img'Last) & ':' &
                  Col_Img (2 .. Col_Img'Last) & ": " &
                  Message);
