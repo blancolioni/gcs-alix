@@ -32,6 +32,7 @@ package GCS.Styles is
        Multi_Characters,              --  multiple chars between single quotes
        Single_Quote_Token,            --  lone quote is a separate token
        Case_Sensitive_Identifiers,    --  XXX is different to xxx
+       Ada_Number_Bases,              --  16#F00D#
        Two_Quote_Escape);             --  "" -> " within "'s
                                       --  '' -> ' with 's
 
@@ -48,6 +49,7 @@ package GCS.Styles is
    Ada_Property_List : constant Property_List :=
      (Single_Quote_Token    => True,
       Two_Quote_Escape      => True,
+      Ada_Number_Bases      => True,
       others                => False);
 
    C_Property_List : constant Property_List :=

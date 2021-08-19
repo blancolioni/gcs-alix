@@ -1086,6 +1086,15 @@ begin
    Initialise_Character_Set (First_Id, Identifier_Start);
    Initialise_Character_Set (Body_Id,  Identifier_Body);
    Initialise_Character_Set (Body_Number, "0123456789._");
+   if Properties (GCS.Styles.Ada_Number_Bases) then
+      Body_Number ('#') := True;
+      for Ch in Character range 'A' .. 'F' loop
+         Body_Number (Ch) := True;
+      end loop;
+      for Ch in Character range 'a' .. 'f' loop
+         Body_Number (Ch) := True;
+      end loop;
+   end if;
    Initialise_Character_Set (Group_Id, Identifier_Group);
 
 end GCS.Lexer;
