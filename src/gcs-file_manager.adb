@@ -419,6 +419,12 @@ package body GCS.File_Manager is
          Info.Index            := Next_File - 1;
       end Init_Source_File;
 
+      Set_Current_Position
+        (File   => Next_File - 1,
+         Line   => 1,
+         Col    => 1,
+         Indent => 1);
+
    end Open;
 
    -------------------------
