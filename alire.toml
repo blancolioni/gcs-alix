@@ -1,0 +1,9 @@
+name = "gcs"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Fraser Wilson"]
+maintainers = ["Fraser Wilson <fraser@thewhitelion.eu>"]
+maintainers-logins = ["blancolioni"]
+[[depends-on]]
+wlib = "*"
